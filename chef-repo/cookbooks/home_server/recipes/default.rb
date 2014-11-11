@@ -7,12 +7,25 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe "postfix-dovecot"
+node.default['postfix-dovecot']['postmaster_address'] = 'admin@yapiz.org'
+node.default['postfix-dovecot']['hostname'] = 'mail.yapiz.org'
 
-node['postfix-dovecot']['postmaster_address'] = 'admin@yapiz.org'
-node['postfix-dovecot']['hostname'] = 'mail.yapiz.org'
+node.default['postfix-dovecot']['common_name'] = 'mail.yapiz.org'
 
-include_recipe 'postfix-dovecot::default'
+#node.default['postfix-dovecot']['ssl_key']['source'] = 'file'
+#node.default['postfix-dovecot']['ssl_key']['path'] = '/etc/ssl/private/postfix.key'
+
+#node.default['postfix-dovecot']['ssl_cert']['source'] = 'file'
+#node.default['postfix-dovecot']['ssl_cert']['path'] = '/etc/ssl/certs/postfix.pem'
+
+#node.default['postfix-dovecot']['ssl_chain']['source'] = 'file'
+#node.default['postfix-dovecot']['ssl_chain']['path'] = '/etc/ssl/certs/postfix-ca.pem'
+
+node.default['dovecot']['conf']['ssl'] = 'yes'
+node.default['dovecot']['conf']['ssl_cert'] = '</etc/ssl/certs/postfix.pem'
+node.default['dovecot']['conf']['ssl_key'] = '</etc/ssl/private/postfix.key'
+
+include_recipe 'postfix-dovecot'
 
 postfixadmin_admin 'admin@yapiz.org' do
   password 'sup3r-s3cr3t-p4ss'
@@ -35,3 +48,19 @@ postfixadmin_alias 'billing@yapiz.org' do
   login_username 'admin@yapiz.org'
   login_password 'sup3r-s3cr3t-p4ss'
 end
+
+cookbook_file "yapiz_org_server.key.pem" do
+  path "/etc/ssl/private/postfix.key"
+  mode '0600'
+  owner 'root'
+  group 'root'
+end
+
+cookbook_file "yapiz_org.crt" do
+  path "/etc/ssl/certs/postfix.pem"
+end
+
+cookbook_file "yapiz_org.ca-bundle.pem" do
+  path "/etc/ssl/certs/postfix-ca.pem"
+end
+
