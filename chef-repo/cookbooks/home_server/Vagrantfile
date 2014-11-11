@@ -33,7 +33,7 @@ Vagrant.configure('2') do |config|
   # Create a public network, which generally matched to bridged network. Bridged
   # networks make the machine appear as another physical device on your network.
 
-  config.vm.network :public_network
+  config.vm.network :public_network, ip: "192.168.0.3"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -85,6 +85,7 @@ Vagrant.configure('2') do |config|
   # config.berkshelf.except = []
 
   config.vm.provision :chef_solo do |chef|
+#    chef.log_level = :debug
     chef.cookbooks_path = ["/home/syadav/chef/chef-repo/cookbooks"]
     chef.json = {
       postfixadmin: {
@@ -92,9 +93,11 @@ Vagrant.configure('2') do |config|
       }
     }
 
-    chef.run_list = %w(
-      recipe[apt]
-      recipe[postfix-dovecot]
-    )
+    chef.add_recipe "home_server"
+
+#    chef.run_list = %w(
+#      recipe[apt]
+#      recipe[postfix-dovecot]
+#    )
   end
 end
