@@ -31,3 +31,5 @@ node.default['dovecot']['conf']['ssl'] = 'yes'
 node.default['dovecot']['conf']['ssl_cert'] = '</etc/ssl/certs/postfix.pem'
 node.default['dovecot']['conf']['ssl_key'] = '</etc/ssl/private/postfix.key'
 node.default['dovecot']['conf']['auth_mechanisms'] = 'plain login'
+
+node.default['postfixadmin']['ssl'] = true

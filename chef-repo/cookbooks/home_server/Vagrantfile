@@ -5,6 +5,7 @@
 # See TESTING.md file.
 
 Vagrant.configure('2') do |config|
+
   # All Vagrant configuration is done here. The most common configuration
   # options are documented and commented below. For a complete reference, please
   # see the online documentation at vagrantup.com.
@@ -13,7 +14,8 @@ Vagrant.configure('2') do |config|
 
   # Opscode Chef Vagrant box to use.
   # More boxes here: https://github.com/opscode/bento
-  opscode_box = 'trusty64'
+#  opscode_box = 'trusty64'
+  opscode_box = 'home_server'
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = opscode_box
@@ -39,11 +41,17 @@ Vagrant.configure('2') do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing 'localhost:8080' will access port 80 on the guest machine.
-  config.vm.network :forwarded_port, guest: 3025, host: 3025, auto_correct: true
-  config.vm.network :forwarded_port, guest: 3143, host: 3143, auto_correct: true
-  config.vm.network :forwarded_port, guest: 3587, host: 3587, auto_correct: true
-  config.vm.network :forwarded_port, guest: 3993, host: 3993, auto_correct: true
-  config.vm.network :forwarded_port, guest: 80, host: 8000, auto_correct: true
+  config.vm.network :forwarded_port, guest: 25, host: 3025, auto_correct: true
+  config.vm.network :forwarded_port, guest: 80, host: 8080, auto_correct: true
+  config.vm.network :forwarded_port, guest: 143, host: 3143, auto_correct: true
+  config.vm.network :forwarded_port, guest: 587, host: 3587, auto_correct: true
+  config.vm.network :forwarded_port, guest: 993, host: 3993, auto_correct: true
+  config.vm.network :forwarded_port, guest: 443, host: 8443, auto_correct: true
+  config.vm.network :forwarded_port, guest: 8883, host: 8883, auto_correct: true
+  config.vm.network :forwarded_port, guest: 1883, host: 7883, auto_correct: true
+  config.vm.network :forwarded_port, guest: 9080, host: 9080, auto_correct: true
+  config.vm.network :forwarded_port, guest: 9443, host: 9443, auto_correct: true
+  config.vm.network :forwarded_port, guest: 3128, host: 3128, auto_correct: true
 
   # The time in seconds that Vagrant will wait for the machine to boot and be
   # accessible.
@@ -54,6 +62,7 @@ Vagrant.configure('2') do |config|
   # guest to mount the folder. And the optional third argument is a set of
   # non-required options.
   # config.vm.synced_folder '../data', '/vagrant_data'
+  config.vm.synced_folder '/data/shared/music', '/music'
 
   # Provider-specific configuration so you can fine-tune various backing
   # providers for Vagrant. These expose provider-specific options.
@@ -105,5 +114,5 @@ Vagrant.configure('2') do |config|
 #    )
   end
 
-  config.vm.provision "shell", path: "init.sh"
+#  config.vm.provision "shell", path: "init.sh"
 end
